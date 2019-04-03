@@ -1,0 +1,18 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -f damintu/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run damintu/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t damintu/lab-multi-client ./client
+  - docker build -t damintu/lab-multi-nginx ./nginx
+  - docker build -t damintu/lab-multi-server ./server
+  - docker build -t damintu/lab-multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push damintu/lab-multi-client  - docker push damintu/lab-multi-client
