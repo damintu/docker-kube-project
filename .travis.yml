@@ -3,7 +3,7 @@ services:
   - docker
 
 before_install:
-  - docker build -f damintu/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t damintu/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run damintu/react-test npm test -- --coverage
@@ -13,6 +13,9 @@ after_success:
   - docker build -t damintu/lab-multi-nginx ./nginx
   - docker build -t damintu/lab-multi-server ./server
   - docker build -t damintu/lab-multi-worker ./worker
-
+#push to dockerhub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push damintu/lab-multi-client  - docker push damintu/lab-multi-client
+  - docker push damintu/lab-multi-client
+  - docker push damintu/lab-multi-nginx
+  - docker push damintu/lab-multi-server
+  - docker push damintu/lab-multi-worker
