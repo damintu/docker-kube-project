@@ -1,0 +1,36 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinition": [
+    {
+      "name": "client",
+      "image": "damintu/lab-multi-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "damintu/lab-multi-server",
+      "hostname": "api",
+      "essential": false
+    },
+    {
+      "name": "worker",
+      "image": "damintu/lab-multi-worker",
+      "hostname": "worker",
+      "essential": false
+    },
+    {
+      "name": "nginx",
+      "image": "damintu/lab-multi-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings":[
+        {
+          "hostPort":80,
+          "containerPort":80
+        }
+      ],
+      "links":["client","server"]
+    }
+  ]
+}
